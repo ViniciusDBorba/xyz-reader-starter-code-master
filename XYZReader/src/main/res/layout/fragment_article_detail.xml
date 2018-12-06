@@ -95,7 +95,6 @@
         android:contentDescription="@string/action_share"
         android:src="@drawable/ic_share"
         app:fabSize="auto"
-        android:background="@color/colorPrimary"
-        android:stateListAnimator="@anim/fab_state_list_anim" />
+        app:backgroundTint="@color/colorPrimary"/>
 
 </RelativeLayout>
