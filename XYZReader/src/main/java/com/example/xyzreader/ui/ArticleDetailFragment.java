@@ -174,21 +174,23 @@ public class ArticleDetailFragment extends Fragment implements
             titleView.setText(mCursor.getString(ArticleLoader.Query.TITLE));
             Date publishedDate = parsePublishedDate();
             if (!publishedDate.before(START_OF_EPOCH.getTime())) {
-                bylineView.setText(
-                        DateUtils.getRelativeTimeSpanString(
-                                publishedDate.getTime(),
-                                System.currentTimeMillis(), DateUtils.HOUR_IN_MILLIS,
-                                DateUtils.FORMAT_ABBREV_ALL).toString().concat(" by ").concat(
-                                mCursor.getString(ArticleLoader.Query.AUTHOR)));
+                bylineView.setText(DateUtils.getRelativeTimeSpanString(
+                        publishedDate.getTime(),
+                        System.currentTimeMillis(), DateUtils.HOUR_IN_MILLIS,
+                        DateUtils.FORMAT_ABBREV_ALL).toString().concat(" by ").concat(
+                        mCursor.getString(ArticleLoader.Query.AUTHOR)));
 
             } else {
                 // If date is before 1902, just show the string
                 bylineView.setText(outputFormat.format(publishedDate)
-                                .concat(" by ")
-                                .concat(mCursor.getString(ArticleLoader.Query.AUTHOR)));
+                        .concat(" by ")
+                        .concat(mCursor.getString(ArticleLoader.Query.AUTHOR)));
 
             }
-            bodyView.setText(mCursor.getString(ArticleLoader.Query.BODY));
+            bodyView.setText(mCursor.getString(ArticleLoader.Query.BODY).replaceAll("(<br/>)", "\n")
+                    .replaceAll("(<br>)", "\n")
+                    .replaceAll("(<a href='http://www.google.com'>Google Search</a>)", "")
+                    .replaceAll("(<a href='https://unsplash.com/'>Unsplash.com</a>)", ""));
             ImageLoaderHelper.getInstance(getActivity()).getImageLoader()
                     .get(mCursor.getString(ArticleLoader.Query.PHOTO_URL), new ImageLoader.ImageListener() {
                         @Override
